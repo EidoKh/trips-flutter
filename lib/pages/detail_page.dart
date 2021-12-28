@@ -1,17 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/misc/colors.dart';
+import 'package:flutter_cubit/widgets/app_buttons.dart';
 import 'package:flutter_cubit/widgets/app_large_text.dart';
 import 'package:flutter_cubit/widgets/app_text.dart';
+import 'package:flutter_cubit/widgets/responsive_button.dart';
 
 class DetailPage extends StatefulWidget {
   const DetailPage({Key? key}) : super(key: key);
+
 
   @override
   _DetailPageState createState() => _DetailPageState();
 }
 
 class _DetailPageState extends State<DetailPage> {
+  int gottenStars=3;
+  int selectedInd=-1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +44,7 @@ class _DetailPageState extends State<DetailPage> {
               ],
             )),
             Positioned(
-                top:320,
+                top:220,
                 child: Container(
                   padding: const EdgeInsets.only(left: 20,right: 20,top: 30),
                   width: MediaQuery.of(context).size.width,
@@ -52,6 +57,7 @@ class _DetailPageState extends State<DetailPage> {
                     )
                   ),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,12 +75,79 @@ class _DetailPageState extends State<DetailPage> {
                           SizedBox(width: 5,),
                           AppText(text: "USA, California",color: AppColors.textColor1,)
                         ],
-                      )
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        children: [
+                          Wrap(
+                            children:
+                            List.generate(5, (index) {
+                              return Icon(Icons.star,color:gottenStars>index? AppColors.starColor:AppColors.textColor2,);
+                            }),
+
+                          ),
+                          SizedBox(width: 10,),
+                          AppText(text: "4.0", color: AppColors.textColor2,)
+                        ],
+                      ),
+                      SizedBox(height: 25,),
+                      AppLargeText(text: "People",color: Colors.black.withOpacity(0.8),size: 20,),
+                      SizedBox(height: 5,),
+                      AppText(text: "Number of people in your group",color: AppColors.mainTextColor),
+                      SizedBox(height: 10,),
+                      Wrap(
+                        children: List.generate(5, (index) {
+                          return InkWell(
+                            onTap: (){
+                              setState(() {
+                                selectedInd=index;
+                              });
+
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.only(right: 10),
+                              child: AppButtons(size: 50,
+                                  color:selectedInd==index?Colors.white: Colors.black,
+                                  backgroundColor:selectedInd==index?Colors.black: AppColors.buttonBackground,
+                                  borderColor:selectedInd==index?Colors.black: AppColors.buttonBackground,
+                                  text: (index+1).toString(),
+                              ),
+                            ),
+                          );
+
+
+                        }),
+                      ),
+                      SizedBox(height: 20,),
+                      AppLargeText(text: "Description",size: 20,color: Colors.black.withOpacity(0.8),),
+                      SizedBox(height: 5,),
+                      AppText(text: "yosemite National Park is located in central Sierra Nevada in the US state of California. It is located near wild protected area.",color: AppColors.mainTextColor),
+                      SizedBox(height: 20,),
+
                     ],
                   ),
 
 
                 )),
+            Positioned(
+              bottom: 20,
+                left: 20,
+                right: 20,
+                child:Row(
+              children: [
+                AppButtons(
+                    size: 60,
+                    color: AppColors.textColor1,
+                    backgroundColor: Colors.white,
+                    borderColor: AppColors.textColor2,
+                  icon: Icons.favorite_border,
+                  isIcon: true,
+                ),
+                SizedBox(width: 20,),
+                ResponsiveButton(isResponsive: true,)],
+            ))
           ],
 
         ),
